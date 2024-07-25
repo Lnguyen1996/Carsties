@@ -65,7 +65,6 @@ namespace AuctionService.Controllers
             }
             return CreatedAtAction(nameof(GetAuctionByID),
                 new { auction.Id }, _mapper.Map<AuctionDto>(auction));
-
         }
 
         [HttpPut("{id}")]
