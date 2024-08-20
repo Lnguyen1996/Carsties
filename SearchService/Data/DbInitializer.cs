@@ -19,8 +19,6 @@ namespace SearchService.Data
                 .Key(i => i.Color, KeyType.Text)
                 .CreateAsync();
 
-            var count = await DB.CountAsync<Item>();
-
             using var scope = application.Services.CreateScope();
 
             var httpClient = scope.ServiceProvider.GetRequiredService<AuctionSvcHttpClient>();
