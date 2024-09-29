@@ -1,6 +1,7 @@
 using AuctionService.Consumers;
 using AuctionService.Data;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,14 @@ builder.Services.AddMassTransit(i =>
     });
 });
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(option =>
+    {
+        option.Authority = builder.Configuration["IdentityServiceUrl"];
+        option.RequireHttpsMetadata = false;
+        option.TokenValidationParameters.ValidateAudience = false;
+        option.TokenValidationParameters.NameClaimType = "username";
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,7 +50,9 @@ if (app.Environment.IsDevelopment())
 {
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 
